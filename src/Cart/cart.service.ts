@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Product } from 'src/Product/product.entity';
+import { Product } from '../Product/product.entity';
 import { Repository } from 'typeorm';
 import { AbstractService } from '../generic/abstract.service';
 import { CartDto } from './cart.dto';

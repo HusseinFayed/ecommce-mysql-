@@ -13,11 +13,9 @@ export class CategoryService extends AbstractService<Category> {
         super(repo);
     }
     async createCategory(category:CategoryDto, user){
-        // return await this.repo.save(category)
         const newCategory = await this.repo.save({
             name_ar: category.name_ar,
             name_en: category.name_en,
-            // userId: category.userId
         })
     }
     async getCategoryById(id: number): Promise<Category> {

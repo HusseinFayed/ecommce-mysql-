@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, 
     ParseIntPipe, Patch, Post, Put, Req, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/Auth/jwt-auth.guard';
-import { ProductService } from 'src/Product/product.service';
+import { JwtAuthGuard } from '../Auth/jwt-auth.guard';
+import { ProductService } from '../Product/product.service';
 import { ControllerFactory } from '../generic/abstract.controller';
 import { CartDto } from './cart.dto';
 import { Cart } from './cart.entity';
