@@ -10,7 +10,6 @@ import { Pagination, IPaginationMeta } from "nestjs-typeorm-paginate";
 import { DeleteResult } from "typeorm";
 
 import { AbstractService } from "./abstract.service";
-import { OBaseEntity } from "../generic/base.entity";
 import { AbstractValidationPipe } from "./abstract-validation.pipe";
 
 
