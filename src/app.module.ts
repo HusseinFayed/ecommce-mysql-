@@ -3,11 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './Auth/auth.module';
-import { CartModule } from './Cart/cart.module';
-import { CategoryModule } from './Category/category.module';
-import { ProductModule } from './Product/product.module';
-import { UserModule } from './User/user.module';
-import { OrderModule } from './Order/order.module';
+import { CartModule } from './modules/Cart/cart.module';
+import { CategoryModule } from './modules/Category/category.module';
+import { OrderModule } from './modules/Order/order.module';
+import { ProductModule } from './modules/Product/product.module';
+import { UserModule } from './modules/User/user.module';
+
 
 @Module({
   imports: [
