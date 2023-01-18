@@ -6,10 +6,10 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserDto } from '../../dtos/user.dto';
 import { DepositDto } from '../../dtos/deposit.dto';
 
-@Controller('auth')
+@Controller()
 export class UsersController {
     constructor(private readonly userService: UserService) { }
-    @Post('/signup')
+    @Post('/auth/signup')
     @HttpCode(200)
     @UsePipes(ValidationPipe)
     async createUser(@Body() user: UserDto) {
@@ -18,13 +18,19 @@ export class UsersController {
 
     @UseGuards(JwtAuthGuard)
     @UsePipes(ValidationPipe)
-    @Patch('/deposit')
+    @Patch('/auth/deposit')
     async deposite(@Req() req, @Body() deposit: DepositDto) {
         const userCheck = await this.userService.getUserByUserName(req.user.name)
         if (!userCheck) {
             throw new HttpException('No User By That Name', HttpStatus.UNAUTHORIZED)
         }
         return await this.userService.deposit(req, userCheck, deposit)
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('get-user-cart')
+    async getUserCart(@Req() req,){
+        return await this.userService.getUserCart(req)
     }
 
 }

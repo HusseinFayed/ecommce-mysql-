@@ -46,5 +46,11 @@ export class CartController extends ControllerFactory<Cart>(Cart) {
         return await this.cartService.editCart(id, cart)
     }
 
+    // @UseGuards(JwtAuthGuard)
+    // @Post('get-user-cart')
+    // async getUserCart(@Req() req,){
+    //     console.log(req.user.name)
+    //     return await this.cartService.getUserCart(req)
+    // }
 
 }

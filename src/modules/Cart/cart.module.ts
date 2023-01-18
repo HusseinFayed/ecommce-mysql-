@@ -7,13 +7,16 @@ import { CategoryService } from '../Category/category.service';
 import { CartController } from './cart.controller';
 import { Cart } from '../../models/cart.entity';
 import { CartService } from './cart.service';
+import { UserService } from '../User/user.service';
+import { User } from '../../models/user.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Cart]),
   TypeOrmModule.forFeature([Product]),
-  TypeOrmModule.forFeature([Category])
+  TypeOrmModule.forFeature([Category]),
+  TypeOrmModule.forFeature([User]),
   ],
-  providers: [CartService, ProductService, CategoryService],
+  providers: [CartService, ProductService, CategoryService,UserService],
   controllers: [CartController]
 })
 export class CartModule { }

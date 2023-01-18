@@ -39,7 +39,7 @@ export class UserService {
     }
 
     async getUserByUserName(username: string): Promise<User> {
-        return await this.userRepository.findOne({ where: { username: username } })
+        return await this.userRepository.findOne({ where: { username: username }, relations: ['carts'] })
     }
 
     async getUserById(id: number): Promise<User> {
@@ -52,5 +52,9 @@ export class UserService {
         console.log('old deposit:', old_deposit)
         console.log('new_deposit', new_deposit)
         await this.userRepository.update({ username: req.user.name }, { deposit: new_deposit })
+    }
+
+    async getUserCart(req): Promise<User>{
+        return await this.userRepository.findOne({ where: {username:req.user.name}, relations:['carts']})
     }
 }

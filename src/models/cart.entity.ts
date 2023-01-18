@@ -1,5 +1,6 @@
 import { Product } from 'src/models/product.entity';
 import { Entity, Column, PrimaryGeneratedColumn,BeforeInsert, BaseEntity, ManyToMany,CreateDateColumn, UpdateDateColumn, OneToMany, ManyToOne } from 'typeorm';
+import { User } from './user.entity';
 
 @Entity({ name: 'carts'})
 export class Cart extends BaseEntity {
@@ -21,6 +22,9 @@ export class Cart extends BaseEntity {
 
   @ManyToOne(() => Product, (product)=> product.carts)
   product: Product
+
+  @ManyToOne(() => User, (user)=> user.carts)
+  user: User
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
   public created_at: Date;
