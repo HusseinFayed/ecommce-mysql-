@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './Auth/auth.module';
+import { LoggerModule } from './logger/logger.module';
 import LogsMiddleware from './logger/logs.middleware';
 import { CartModule } from './modules/Cart/cart.module';
 import { CategoryModule } from './modules/Category/category.module';
@@ -25,7 +26,7 @@ import { UserModule } from './modules/User/user.module';
       autoLoadEntities: true,
       // synchronize: true,
       //dropSchema: true
-    }), ProductModule, UserModule, AuthModule, CartModule, CategoryModule, OrderModule
+    }), ProductModule, UserModule, AuthModule, CartModule, CategoryModule, OrderModule, LoggerModule
   ],
   controllers: [AppController],
   providers: [AppService],
