@@ -19,7 +19,7 @@ async function bootstrap() {
   /////////// Swagger Start//////////////
   const config = new DocumentBuilder()
     .setTitle('Ecommerce EndPoint')
-    .setDescription('A Demo Ecommerce EndPoint')
+    .setDescription('Ecommerce EndPoint')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
