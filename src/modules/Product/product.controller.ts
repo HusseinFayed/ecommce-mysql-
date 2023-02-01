@@ -3,15 +3,18 @@ import {
     Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param,
     ParseIntPipe, Post, Put, Req, Res, UseGuards, UsePipes, ValidationPipe
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../../Auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../Auth/jwt-auth.guard';
 import { ProductDto } from '../../dtos/product.dto';
 import { ControllerFactory } from '../../generic/abstract.controller';
 import { Product } from '../../models/product.entity';
 import { UserService } from '../User/user.service';
 import { ProductService } from './product.service';
+import { ApiTags } from '@nestjs/swagger';
 
 
 @Controller()
+@ApiTags('Product')
+
 export class ProductController extends ControllerFactory<Product>(Product) {
     constructor(private productService: ProductService,
         private userService: UserService

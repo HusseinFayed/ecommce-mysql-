@@ -2,11 +2,14 @@ import { Body, Controller, Post, Get, Param, HttpCode, UsePipes, ValidationPipe,
 import { UserService } from './user.service';
 import { HttpException } from '@nestjs/common/exceptions';
 import { HttpStatus } from '@nestjs/common/enums';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/modules/Auth/jwt-auth.guard';
 import { UserDto } from '../../dtos/user.dto';
 import { DepositDto } from '../../dtos/deposit.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller()
+@ApiTags('Users')
+
 export class UsersController {
     constructor(private readonly userService: UserService) { }
     @Post('/auth/signup')

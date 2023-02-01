@@ -1,12 +1,15 @@
 import { Controller } from '@nestjs/common';
-import { Body, HttpCode, Post, Req, UseGuards, UsePipes } from '@nestjs/common/decorators';
-import { ValidationPipe } from '@nestjs/common/pipes';
-import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
+import { Body, HttpCode, Param, Post, Req, UseGuards, UsePipes } from '@nestjs/common/decorators';
+import { ParseIntPipe, ValidationPipe } from '@nestjs/common/pipes';
+import { JwtAuthGuard } from '../Auth/jwt-auth.guard';
 import { ControllerFactory } from '../../generic/abstract.controller';
 import { Order } from '../../models/order.entity';
 import { OrderService } from './order.service';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller()
+@ApiTags('Order')
+
 export class OrderController extends ControllerFactory<Order>(Order) {
     constructor(private orderService: OrderService
     ) {

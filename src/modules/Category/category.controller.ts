@@ -1,12 +1,15 @@
 import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Param, ParseIntPipe, Req, Post, UsePipes, ValidationPipe, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../../Auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../Auth/jwt-auth.guard';
 import { CategoryDto } from '../../dtos/category.dto';
 import { ControllerFactory } from '../../generic/abstract.controller';
 import { Category } from '../../models/category.entity';
 import { UserService } from '../User/user.service';
 import { CategoryService } from './category.service';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller()
+@ApiTags('Category')
+
 export class CategoryController extends ControllerFactory<Category>(Category) {
     constructor(private categoryService: CategoryService,
         private userService: UserService

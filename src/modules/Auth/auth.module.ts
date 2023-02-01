@@ -6,8 +6,8 @@ import { AuthController } from './auth.controller';
 import { LocalStrategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../models/user.entity';
-import { UserModule } from '../modules/User/user.module';
+import { User } from '../../models/user.entity';
+import { UserModule } from '../User/user.module';
 
 
 @Module({
