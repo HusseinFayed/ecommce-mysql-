@@ -42,6 +42,7 @@ E-commerce (electronic commerce) is the buying and selling of products according
 2) Make a transaction from buyer deposit to seller deposit 
 3) Print Recipe by buyer order
 4) Seller can get all his orders
+5) User password reset & change
 
 ## Installation
 
