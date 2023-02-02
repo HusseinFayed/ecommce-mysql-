@@ -7,6 +7,7 @@ import { Product } from '../../models/product.entity';
 import { Repository } from 'typeorm';
 import { UserService } from '../User/user.service';
 import { Recipe } from '../../models/recipe.entity';
+import { LOADIPHLPAPI } from 'dns';
 
 @Injectable()
 export class OrderService extends AbstractService<Order>{
@@ -46,9 +47,9 @@ export class OrderService extends AbstractService<Order>{
                 .select(['p.stock']).getMany()
             console.log('Stock =', stock[0].stock);
 
-            //////////to be reviewed
             const qty = await this.cartRepo.createQueryBuilder('p')
                 .where('p.user_name = :user_name', { user_name })
+                .andWhere('p.productId = :productId', { productId })
                 .select(['p.qty']).getMany()
             console.log('Quantity =', qty[0].qty);
 
@@ -57,15 +58,13 @@ export class OrderService extends AbstractService<Order>{
                 return "Out Of Stock"
             console.log('Updated Stock =', updated_stock);
 
-            // // await this.productRepo.update({ id:productId}, {stock:updated_stock})
+            // await this.productRepo.update({ id: productId }, { stock: updated_stock })
 
-
-            // //////////to be reviewed
-                const price = await this.cartRepo.createQueryBuilder('p')
-                    .where('p.user_name = :user_name', { user_name })
-                    .andWhere('p.productId = :productId', { productId }) 
-                    .select(['p.price']).getMany()
-                console.log('Price =', price[0].price);
+            const price = await this.cartRepo.createQueryBuilder('p')
+                .where('p.user_name = :user_name', { user_name })
+                .andWhere('p.productId = :productId', { productId })
+                .select(['p.price']).getMany()
+            console.log('Price =', price[0].price);
 
             const total_price = price[0].price * qty[0].qty
             console.log('Total Price =', total_price);
@@ -80,19 +79,15 @@ export class OrderService extends AbstractService<Order>{
                 //sellerName: sellerName[0].user[0],
             })
 
-            // // await this.cartRepo.delete({ user_name: user_name })
-            
+            //     // // await this.cartRepo.delete({ user_name: user_name })
+
             var recipe_number = await this.recipeRepo.createQueryBuilder('p')
-            .where('p.order_number = :order_number', { order_number })
-            .select(['p.id']).getOne()
-            recipe_number = JSON.parse(JSON.stringify(recipe_number)).id
-            console.log('Recipe Number =', recipe_number);
+                .where('p.order_number = :order_number', { order_number })
+                .select(['p.id']).getMany()
+            console.log('Recipe Number =', recipe_number[0].id);
 
-            // await this.repo.update({ order_number: order_number }
-            //     , {recipe_number: recipe_number})
-
+            await this.repo.update({ order_number: order_number }, { recipe_number: recipe_number[0].id })
         })
-
 
     }
 }
