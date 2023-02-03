@@ -17,10 +17,18 @@ export class OrderController extends ControllerFactory<Order>(Order) {
     }
     @Post('make-order')
     @UseGuards(JwtAuthGuard)
-    @HttpCode(200)
+    // @HttpCode(200)
     @UsePipes(ValidationPipe)
     async makeOrder(@Req() req) {
         return await this.orderService.makeOrder(req);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('confirm-Order')
+    @HttpCode(200)
+    @UsePipes(ValidationPipe)
+    async confirmOrder(@Req() req) {
+        return await this.orderService.confirmOrder(req);
     }
 
 }

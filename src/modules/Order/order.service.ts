@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AbstractService } from '../../generic/abstract.service';
 import { Order } from '../../models/order.entity';
@@ -7,7 +7,7 @@ import { Product } from '../../models/product.entity';
 import { Repository } from 'typeorm';
 import { UserService } from '../User/user.service';
 import { Recipe } from '../../models/recipe.entity';
-import { LOADIPHLPAPI } from 'dns';
+import { User } from '../../models/user.entity';
 
 @Injectable()
 export class OrderService extends AbstractService<Order> {
@@ -17,7 +17,7 @@ export class OrderService extends AbstractService<Order> {
         @InjectRepository(Product)
         private readonly productRepo: Repository<Product>,
         @InjectRepository(Recipe) private readonly recipeRepo: Repository<Recipe>,
-        private readonly userservice: UserService,
+        @InjectRepository(User) private readonly userRepo: Repository<User>,
     ) {
         super(repo);
     }
@@ -60,8 +60,9 @@ export class OrderService extends AbstractService<Order> {
             console.log('Quantity =', qty[0].qty);
 
             const updated_stock = Number(stock[0].stock) - Number(qty[0].qty);
-            if (updated_stock < 0) return 'Out Of Stock';
             console.log('Updated Stock =', updated_stock);
+
+            if (updated_stock < 0) return 'Out Of Stock';
 
             await this.productRepo.update(
                 { id: productId },
@@ -103,5 +104,71 @@ export class OrderService extends AbstractService<Order> {
                 { recipe_number: recipe_number[0].id },
             );
         });
+    }
+
+    async confirmOrder(req) {
+        const user_name = req.user.name;
+        console.log('User: ', user_name);
+
+        var order_numberObj = await this.repo
+            .createQueryBuilder('p')
+            .where('p.user_name = :user_name', { user_name })
+            .select(['p.order_number'])
+            .getOne();
+        
+        const order_number = order_numberObj.order_number
+        console.log('Order Number :', order_number);
+
+        // const userOldDeposit = await this.userRepo
+        //     .createQueryBuilder('p')
+        //     .where('p.username = :username', { user_name })
+        //     .select(['p.deposit'])
+        //     .getOne();
+        // console.log("User Old Deposit =", userOldDeposit[0].deposit);
+
+        const userOldDeposit = await (
+            await this.userRepo.findOne({ where: { username: req.user.name } })
+        ).deposit;
+        console.log('User Old Deposit =', userOldDeposit);
+
+        var total_recipe = await this.repo.query(
+            `SELECT SUM (total_price) From orders WHERE user_name = '${user_name}'`,
+        )
+        console.log('Total Recipe', total_recipe.at(0)['SUM (total_price)']);
+
+        if (userOldDeposit < total_recipe.at(0)['SUM (total_price)']) {
+            throw new HttpException('You Dont have enough CREDIT', HttpStatus.BAD_REQUEST)
+        }
+
+        const updatedBuyerDeposit = userOldDeposit - total_recipe.at(0)['SUM (total_price)']
+        console.log('Updated Buyer Deposit =', updatedBuyerDeposit);
+
+        // await this.userRepo.update(
+        //     { username: user_name },
+        //     {deposit: updatedBuyerDeposit}
+        //     )
+
+        const sellerProduct = await this.repo
+            .createQueryBuilder('p')
+            .where('p.order_number = :order_number', { order_number })
+            .select(['p.product_id'])
+            .getMany();
+        console.log('Product Id :', sellerProduct);
+
+
+        // sellerProduct.forEach(async (y)=> {
+
+        //     const product_id = y.product_id
+        //     console.log('Product:', product_id);
+
+        //     const oldSellerDeposit = await this.userRepo.createQueryBuilder('p')
+        //     .where('p.username = :username', {user_name})
+        //     .select(['p.deposit'])
+        //     .getMany();
+        //     console.log('Old Seller Deposit =',oldSellerDeposit);
+           
+
+        // })
+
     }
 }
