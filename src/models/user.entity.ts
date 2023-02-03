@@ -2,6 +2,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, BaseEntity, ManyToMany, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToOne } from 'typeorm';
 import { Cart } from './cart.entity';
 import { Category } from './category.entity';
+import { Product } from './product.entity';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
@@ -26,6 +27,9 @@ export class User extends BaseEntity {
 
   @Column({ select: false })
   change_password_token: number;
+
+  @OneToMany(() => Product, (product) => product.user)
+  products: Product[];
 
   @OneToMany(() => Cart, (cart) => cart.user)
   carts: Cart[];

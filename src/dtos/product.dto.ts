@@ -17,7 +17,7 @@ export class ProductDto {
     @IsNotEmpty({ message: 'Please Enter Product Category ID'})
     categoryId: number
 
-    // @IsNotEmpty({ message: 'Please Enter Product Seller'})
-    // userId: number
+    @IsNotEmpty({ message: 'Please Enter Product Seller'})
+    userId: number
 
 }

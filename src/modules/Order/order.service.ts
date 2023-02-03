@@ -115,7 +115,7 @@ export class OrderService extends AbstractService<Order> {
             .where('p.user_name = :user_name', { user_name })
             .select(['p.order_number'])
             .getOne();
-        
+
         const order_number = order_numberObj.order_number
         console.log('Order Number :', order_number);
 
@@ -143,10 +143,10 @@ export class OrderService extends AbstractService<Order> {
         const updatedBuyerDeposit = userOldDeposit - total_recipe.at(0)['SUM (total_price)']
         console.log('Updated Buyer Deposit =', updatedBuyerDeposit);
 
-        await this.userRepo.update(
-            { username: user_name },
-            {deposit: updatedBuyerDeposit}
-            )
+        // await this.userRepo.update(
+        //     { username: user_name },
+        //     {deposit: updatedBuyerDeposit}
+        //     )
 
         const sellerProduct = await this.repo
             .createQueryBuilder('p')
@@ -156,19 +156,28 @@ export class OrderService extends AbstractService<Order> {
         console.log('Product Id :', sellerProduct);
 
 
-        // sellerProduct.forEach(async (y)=> {
+        sellerProduct.forEach(async (y) => {
 
-        //     const product_id = y.product_id
-        //     console.log('Product:', product_id);
+            const product_id = y.product_id
+            console.log('Product:', product_id);
 
-        //     const oldSellerDeposit = await this.userRepo.createQueryBuilder('p')
-        //     .where('p.username = :username', {user_name})
-        //     .select(['p.deposit'])
-        //     .getMany();
-        //     console.log('Old Seller Deposit =',oldSellerDeposit);
-           
+            const sellerName = await (await this.productRepo.findOne({ where: { id: product_id } })).userName
+            console.log('Seller Name :', sellerName);
 
-        // })
+            // const oldSellerDeposit = await this.userRepo.createQueryBuilder('p')
+            //     .where('p.username = :username', { sellerName })
+            //     .select(['p.deposit'])
+            //     .getMany();
+            // console.log('Old Seller Deposit =', oldSellerDeposit);
+
+            const oldSellerDeposit = await (await this.userRepo.findOne({ where: {username : sellerName}})).deposit
+            console.log('Old Seller Deposit =', oldSellerDeposit);
+
+            ///// To Be Done By Relations
+
+          
+
+        })
 
     }
 }

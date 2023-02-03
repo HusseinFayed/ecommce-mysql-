@@ -3,6 +3,7 @@ import { Cart } from './cart.entity';
 import { OBaseEntity } from '../generic/base.entity';
 import { Entity, Column, PrimaryGeneratedColumn,BeforeInsert, BaseEntity, ManyToMany,CreateDateColumn, UpdateDateColumn, OneToMany, ManyToOne } from 'typeorm';
 import { Category } from './category.entity';
+import { User } from './user.entity';
 
 @Entity({ name: 'products'})
 export class Product extends BaseEntity {
@@ -24,6 +25,9 @@ export class Product extends BaseEntity {
   
   @Column()
   userName:string;
+
+  @ManyToOne(() => User, (user)=> user.products)
+  user: User
 
   @ManyToOne(() => Category, (category)=> category.products)
   category: Category
