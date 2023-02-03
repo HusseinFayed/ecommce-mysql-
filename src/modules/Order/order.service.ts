@@ -143,10 +143,10 @@ export class OrderService extends AbstractService<Order> {
         const updatedBuyerDeposit = userOldDeposit - total_recipe.at(0)['SUM (total_price)']
         console.log('Updated Buyer Deposit =', updatedBuyerDeposit);
 
-        // await this.userRepo.update(
-        //     { username: user_name },
-        //     {deposit: updatedBuyerDeposit}
-        //     )
+        await this.userRepo.update(
+            { username: user_name },
+            {deposit: updatedBuyerDeposit}
+            )
 
         const sellerProduct = await this.repo
             .createQueryBuilder('p')
