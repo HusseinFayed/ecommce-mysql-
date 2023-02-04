@@ -43,7 +43,7 @@ export class UserService {
     }
 
     async getUserById(id: number): Promise<User> {
-        return await this.userRepository.findOne({ where: { id: id } })
+        return await this.userRepository.findOne({ where: { id: id }, relations: ['products'] })
     }
 
     async deposit(req, userCheck, deposit: DepositDto) {

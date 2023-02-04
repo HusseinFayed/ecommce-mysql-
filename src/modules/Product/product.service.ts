@@ -49,6 +49,6 @@ export class ProductService extends AbstractService<Product> {
     // }
 
     async getProductById(id: number): Promise<Product> {
-        return await this.repo.findOne({ where: { id: id }, relations: ['category'] })
+        return await this.repo.findOne({ where: { id: id }, relations: ['category','user']  });
     }
 }
