@@ -143,10 +143,12 @@ export class OrderService extends AbstractService<Order> {
         const updatedBuyerDeposit = userOldDeposit - total_recipe.at(0)['SUM (total_price)']
         console.log('Updated Buyer Deposit =', updatedBuyerDeposit);
 
-        // await this.userRepo.update(
-        //     { username: user_name },
-        //     {deposit: updatedBuyerDeposit}
-        //     )
+        await this.userRepo.update(
+            { username: user_name },
+            {deposit: updatedBuyerDeposit}
+            )
+
+        await this.recipeRepo.update({user_name: user_name}, {status: "PAID"} )
 
         const sellerProduct = await this.repo
             .createQueryBuilder('p')
@@ -164,19 +166,25 @@ export class OrderService extends AbstractService<Order> {
             const sellerName = await (await this.productRepo.findOne({ where: { id: product_id } })).userName
             console.log('Seller Name :', sellerName);
 
-            // const oldSellerDeposit = await this.userRepo.createQueryBuilder('p')
-            //     .where('p.username = :username', { sellerName })
-            //     .select(['p.deposit'])
-            //     .getMany();
-            // console.log('Old Seller Deposit =', oldSellerDeposit);
+            // // const oldSellerDeposit = await this.userRepo.createQueryBuilder('p')
+            // //     .where('p.username = :username', { sellerName })
+            // //     .select(['p.deposit'])
+            // //     .getMany();
+            // // console.log('Old Seller Deposit =', oldSellerDeposit);
 
-            const oldSellerDeposit = await (await this.userRepo.findOne({ where: {username : sellerName}})).deposit
+            const oldSellerDeposit = await (await this.userRepo.findOne({ where: { username: sellerName } })).deposit
             console.log('Old Seller Deposit =', oldSellerDeposit);
 
-            ///// To Be Done By Relations
+            const total_price = await this.repo.createQueryBuilder('p')
+                .where('p.product_id= :product_id', { product_id })
+                .select(['p.total_price']).getMany();
 
-          
+            console.log('Total Price =', total_price[0].total_price);
 
+            const newSellerDeposit = +oldSellerDeposit + +total_price[0].total_price
+            console.log('New Seller Deposit =', newSellerDeposit);
+
+            await this.userRepo.update({username:sellerName},{deposit: newSellerDeposit})
         })
 
     }
