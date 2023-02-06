@@ -27,6 +27,9 @@ export class Order extends BaseEntity {
     @Column()
     recipe_number: number;
 
+    @Column()
+    seller_name: string;
+
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
     public created_at: Date;
     
