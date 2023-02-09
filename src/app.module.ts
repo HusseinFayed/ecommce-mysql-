@@ -26,7 +26,7 @@ import { UserModule } from './modules/User/user.module';
       autoLoadEntities: true,
       // synchronize: true,
       //dropSchema: true
-    }), ProductModule, UserModule, AuthModule, CartModule, CategoryModule, OrderModule, LoggerModule
+    }), ProductModule, UserModule, AuthModule, CartModule, CategoryModule, OrderModule, LoggerModule, 
   ],
   controllers: [AppController],
   providers: [AppService],

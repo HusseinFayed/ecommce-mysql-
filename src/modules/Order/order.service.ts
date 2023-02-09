@@ -20,6 +20,10 @@ export class OrderService extends AbstractService<Order> {
         super(repo);
     }
 
+    async getRecipeById(id: number): Promise<Recipe> {
+        return await this.recipeRepo.findOne({ where: { id: id } });
+    }
+
     async makeOrder(req) {
         const user_name = req.user.name;
         console.log('User Name :', user_name);
@@ -191,5 +195,25 @@ export class OrderService extends AbstractService<Order> {
 
             await this.userRepo.update({ username: sellerName }, { deposit: newSellerDeposit })
         })
+    }
+
+    async printRecipe(id): Promise<Order[]> {
+        var user_name = await this.recipeRepo.createQueryBuilder('p')
+            .where('p.id = :id', { id })
+            .select(['p.user_name'])
+            .getMany();
+        console.log('User Name:', user_name[0].user_name);
+
+        var order_number = await this.recipeRepo.createQueryBuilder('p')
+            .where('p.id = :id', { id })
+            .select(['p.order_number'])
+            .getMany();
+        console.log("Order Number :", order_number[0].order_number)
+
+        const orders = await this.repo.createQueryBuilder('p')
+            .where('p.order_number = :order_number', { order_number: order_number[0].order_number }).getMany();
+        console.log(orders);
+
+        return (orders)
     }
 }

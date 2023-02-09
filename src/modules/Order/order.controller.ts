@@ -1,5 +1,5 @@
-import { Controller } from '@nestjs/common';
-import { Body, HttpCode, Param, Post, Req, UseGuards, UsePipes } from '@nestjs/common/decorators';
+import { Controller, HttpException, HttpStatus } from '@nestjs/common';
+import { Body, Get, HttpCode, Param, Post, Render, Req, UseGuards, UsePipes } from '@nestjs/common/decorators';
 import { ParseIntPipe, ValidationPipe } from '@nestjs/common/pipes';
 import { JwtAuthGuard } from '../Auth/jwt-auth.guard';
 import { ControllerFactory } from '../../generic/abstract.controller';
@@ -29,6 +29,17 @@ export class OrderController extends ControllerFactory<Order>(Order) {
     @UsePipes(ValidationPipe)
     async confirmOrder(@Req() req) {
         return await this.orderService.confirmOrder(req);
+    }
+
+    @Get('print-recipe/:id')
+    @Render('print-recipe')
+    async printRecipe(@Param('id') id) {
+        const recipe = await this.orderService.getRecipeById(id)
+        if (!recipe) {
+            throw new HttpException('No Recipe By That Id', HttpStatus.BAD_REQUEST)
+        }
+        return await this.orderService.printRecipe(id)
+            .then((result) => result ? { orders: result } : { orders: [] });
     }
 
 }
