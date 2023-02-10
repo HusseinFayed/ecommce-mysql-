@@ -216,4 +216,12 @@ export class OrderService extends AbstractService<Order> {
 
         return (orders)
     }
+
+    async findAllRecipes(): Promise<Recipe[]> {
+        return await this.recipeRepo.find({})
+    }
+
+    async findAllOrders(): Promise<Order[]> {
+        return await this.repo.find({})
+    }
 }

@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html>
-    <center>
+<center>
+
     <head>
-<strong><h1> Orders Table </h1></strong>
-    </center>
+        <strong>
+            <h1> Orders Table </h1>
+        </strong>
+</center>
 </head>
-    <head>
-        <title>Orders Table</title>
-        <meta charset="windows-1252">
-        <meta name="viewport" content="width=device-width, initial-scale=3.0">
-    </head>
-    <body>
+
+<head>
+    <title>Orders Table</title>
+    <meta charset="windows-1252">
+    <meta name="viewport" content="width=device-width, initial-scale=3.0">
+</head>
+
+<body>
     <center>
-    <table id="table" border="10">
-        <tr>
+        <table id="table" border="10">
+            <tr>
                 <th>User Name</th>
                 <th>Product ID</th>
                 <th>Quantity</th>
@@ -22,9 +27,9 @@
                 <th>Order Number</th>
                 <th>Recipe Number</th>
                 <th>Operation Time</th>
-        </tr>
+            </tr>
             {{#each orders}}
-             <tr>
+            <tr>
                 <th>{{user_name}}</th>
                 <th>{{product_id}}</th>
                 <th>{{qty}}</th>
@@ -32,8 +37,9 @@
                 <th>{{total_price}}</th>
                 <th>{{order_number}}</th>
                 <th>{{recipe_number}}</th>
-                <th>{{createdAt}}</th>
+                <th>{{created_at}}</th>
             </tr>
             {{/each}}
         </table>
+
 </html>
