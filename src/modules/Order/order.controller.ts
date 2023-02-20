@@ -54,4 +54,11 @@ export class OrderController extends ControllerFactory<Order>(Order) {
         return this.orderService.findAllOrders().then((result) => result ? { orders: result } : { orders: [] });
     }
 
+
+    // @Post('/searchOrders')
+    // @ApiTags('Search Orders')
+    // async searchOrders(@Body() args: string) {
+    //     return await this.orderService.searchOrders(args)
+    // }
+
 }

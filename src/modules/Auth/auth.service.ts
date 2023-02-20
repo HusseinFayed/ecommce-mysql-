@@ -14,6 +14,7 @@ export class AuthService {
 
     async validateUserCreds(username: string, password: string): Promise<any> {
         const user = await this.userService.getUserByEmail(username);
+        
         if (!user) throw new BadRequestException();
 
         const passworMatch = await bcrypt.compare(password, user.password);

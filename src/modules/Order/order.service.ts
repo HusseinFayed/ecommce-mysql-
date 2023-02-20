@@ -4,7 +4,7 @@ import { AbstractService } from '../../generic/abstract.service';
 import { Order } from '../../models/order.entity';
 import { Cart } from '../../models/cart.entity';
 import { Product } from '../../models/product.entity';
-import { Repository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 import { Recipe } from '../../models/recipe.entity';
 import { User } from '../../models/user.entity';
 
@@ -224,4 +224,27 @@ export class OrderService extends AbstractService<Order> {
     async findAllOrders(): Promise<Order[]> {
         return await this.repo.find({})
     }
+
+    // async searchOrders(args: string) {
+    //     const searchOrders = (args: any) => {
+    //         const { searchQuery } = args;
+    //         const repo = getRepository(Order);
+
+    //         const x = this.repo.createQueryBuilder().select()
+    //             .where(`MATCH(user_name) AGAINST ('${searchQuery}' IN BOOLEAN MODE)`)
+    //             .orWhere(`MATCH(product_id) AGAINST ('${searchQuery}' IN BOOLEAN MODE)`)
+    //             .orWhere(`MATCH(qty) AGAINST ('${searchQuery}' IN BOOLEAN MODE)`)
+    //             .orWhere(`MATCH(price) AGAINST ('${searchQuery}' IN BOOLEAN MODE)`)
+    //             .orWhere(`MATCH(total_price) AGAINST ('${searchQuery}' IN BOOLEAN MODE)`)
+    //             .orWhere(`MATCH(order_number) AGAINST ('${searchQuery}' IN BOOLEAN MODE)`)
+    //             .orWhere(`MATCH(recipe_number) AGAINST ('${searchQuery}' IN BOOLEAN MODE)`)
+    //             .orWhere(`MATCH(seller_name) AGAINST ('${searchQuery}' IN BOOLEAN MODE)`)
+    //             .getMany();
+    //             console.log(x);
+    //     }
+
+
 }
+
+
+
