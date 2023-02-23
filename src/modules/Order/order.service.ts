@@ -10,6 +10,7 @@ import { User } from '../../models/user.entity';
 
 @Injectable()
 export class OrderService extends AbstractService<Order> {
+
     constructor(
         @InjectRepository(Order) private readonly repo: Repository<Order>,
         @InjectRepository(Cart) private readonly cartRepo: Repository<Cart>,
@@ -225,25 +226,19 @@ export class OrderService extends AbstractService<Order> {
         return await this.repo.find({})
     }
 
-    // async searchOrders(args: string) {
-    //     const searchOrders = (args: any) => {
-    //         const { searchQuery } = args;
-    //         const repo = getRepository(Order);
+    async getSellerOrders(req: any) {
+        const seller_name = req.user.name;
+        console.log('User: ', seller_name);
 
-    //         const x = this.repo.createQueryBuilder().select()
-    //             .where(`MATCH(user_name) AGAINST ('${searchQuery}' IN BOOLEAN MODE)`)
-    //             .orWhere(`MATCH(product_id) AGAINST ('${searchQuery}' IN BOOLEAN MODE)`)
-    //             .orWhere(`MATCH(qty) AGAINST ('${searchQuery}' IN BOOLEAN MODE)`)
-    //             .orWhere(`MATCH(price) AGAINST ('${searchQuery}' IN BOOLEAN MODE)`)
-    //             .orWhere(`MATCH(total_price) AGAINST ('${searchQuery}' IN BOOLEAN MODE)`)
-    //             .orWhere(`MATCH(order_number) AGAINST ('${searchQuery}' IN BOOLEAN MODE)`)
-    //             .orWhere(`MATCH(recipe_number) AGAINST ('${searchQuery}' IN BOOLEAN MODE)`)
-    //             .orWhere(`MATCH(seller_name) AGAINST ('${searchQuery}' IN BOOLEAN MODE)`)
-    //             .getMany();
-    //             console.log(x);
-    //     }
+        const orders = await this.repo.createQueryBuilder('p')
+            .where('p.seller_name = :seller_name', { seller_name: seller_name }).getMany();
+        console.log(orders);
 
-
+        var total_seller_income = await this.repo.query(
+            `SELECT SUM (total_price) From orders WHERE seller_name = '${seller_name}'`,
+        )
+        console.log('Total Seller Income', total_seller_income.at(0)['SUM (total_price)']);
+    }
 }
 
 

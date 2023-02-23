@@ -44,21 +44,23 @@ export class OrderController extends ControllerFactory<Order>(Order) {
 
     @Get('get-recipes')
     @Render('recipe-table')
-    findAllRecipes(){
+    findAllRecipes() {
         return this.orderService.findAllRecipes().then((result) => result ? { recipes: result } : { recipes: [] });
     }
 
     @Get('get-orders')
     @Render('order-table')
-    findAllOrders(){
+    findAllOrders() {
         return this.orderService.findAllOrders().then((result) => result ? { orders: result } : { orders: [] });
     }
 
+    @UseGuards(JwtAuthGuard)
+    @Render('seller-orders')
+    @Get('get-seller-orders')
+    async getSellerOrders(@Req() req) {
+        return await this.orderService.getSellerOrders(req)
+            // .then((result) => result ? { orders: result } : { orders: [] })
+    }
 
-    // @Post('/searchOrders')
-    // @ApiTags('Search Orders')
-    // async searchOrders(@Body() args: string) {
-    //     return await this.orderService.searchOrders(args)
-    // }
 
 }
